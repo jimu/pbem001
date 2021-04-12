@@ -1,0 +1,11 @@
+div.image img[src="axial-diagram.png"]{ 
+    width:400px; 
+}
+
+div.image img[src="offset-diagram.png"]{ 
+    width:400px; 
+}
+
+img.inline[src="offset-diagram.png"]{ 
+    width:200px; 
+}
