@@ -322,11 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f3a2b7ffa51d54f9ba21b473562abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalSpeed: 0
-  fastSpeed: 0
+  normalSpeed: 0.5
+  fastSpeed: 3
   movementSpeed: 0
-  movementTime: 0
+  movementTime: 1
   newPosition: {x: 0, y: 0, z: 0}
+  rotationSpeed: 1
 --- !u!1 &157253690
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public float movementSpeed;
     public float movementTime;
     public Vector3 newPosition;
+    public float rotationSpeed = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +29,13 @@ public class CameraController : MonoBehaviour
         newPosition += transform.up * movementSpeed * Input.GetAxis("Vertical");
         newPosition += transform.right * movementSpeed * Input.GetAxis("Horizontal");
 
-        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+        //transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         transform.position = newPosition;
+
+        //newRotation *= Quaternion.Euler(Vector3.forward * rotation); // transform.right * movementSpeed * Input.GetAxis("Horizontal");
+        float rotation = Input.GetAxis("Rotation");
+        Debug.Log($"Rotation={rotation}");
+        transform.rotation *= Quaternion.Euler(Vector3.forward * rotation * rotationSpeed);
 
     }
 }
