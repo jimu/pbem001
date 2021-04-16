@@ -28,6 +28,8 @@ public class HexGrid : MonoBehaviour
     /// </summary>
     public Text cellLabelPrefab;
 
+    public float label_offset_x = 6.5f;
+
     /// <summary>
     /// HexMesh object used to hold the triangle geometry of the hexagon
     /// </summary>
@@ -42,6 +44,14 @@ public class HexGrid : MonoBehaviour
     /// Canvas with text objects for coordinate labels
     /// </summary>
     Canvas gridCanvas;
+
+
+    private Color defaultColor = new Color32(0x76, 0x5D, 0x46, 0xFF); // 1, 0.5f, 0.5f); // Color.white; // 765D46
+
+    /// <summary>
+    /// Depricated - color used when hex was touched
+    /// </summary>
+    // public Color depricated_touchedColor = Color.magenta;
 
     /// <summary>
     /// Creates all the HexCells needed by the HexGrid
@@ -86,9 +96,27 @@ public class HexGrid : MonoBehaviour
         cell.transform.localPosition = position;
         cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 
+        cell.color = defaultColor; // new Color(1f, 0.5f, 0.5f);// Color.green;
+
         Text label = Instantiate<Text>(cellLabelPrefab);
         label.rectTransform.SetParent(gridCanvas.transform, false);
-        label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-        label.text = cell.coordinates.ToStringOnSeparateLines();  // $"{x}\n{z}";
+        label.rectTransform.anchoredPosition = new Vector2(position.x + label_offset_x, position.z);
+        //label.text = cell.coordinates.ToStringOnSeparateLines();  // $"{x}\n{z}";
+        label.text = cell.coordinates.ToRivetsString();
     }
+
+
+    public void ColorCell(Vector3 position, Color color)
+    {
+        position = transform.InverseTransformPoint(position);
+        // Use HexCoordinates to convert mouse position to hex-coordinates
+        HexCoordinates coordinates = HexCoordinates.FromPosition(position);
+        Debug.Log($"touched at {position} ({coordinates.ToString()}");
+
+        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+        HexCell cell = cells[index];
+        cell.color = color;
+        hexMesh.Triangulate(cells);
+    }
+
 }
