@@ -327,7 +327,15 @@ MonoBehaviour:
   movementSpeed: 0
   movementTime: 1
   newPosition: {x: 0, y: 0, z: 0}
+  newRotation: {x: 0, y: 0, z: 0, w: 0}
   rotationSpeed: 1
+  cameraTransform: {fileID: 963194228}
+  zoomAmount: {x: 10, y: 10, z: 10}
+  newZoom: {x: 0, y: 0, z: 0}
+  dragStartPosition: {x: 0, y: 0, z: 0}
+  dragCurrentPosition: {x: 0, y: 0, z: 0}
+  rotateStartPosition: {x: 0, y: 0, z: 0}
+  rotateCurrentPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &157253690
 GameObject:
   m_ObjectHideFlags: 0
