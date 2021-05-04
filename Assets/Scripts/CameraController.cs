@@ -53,20 +53,76 @@ public class CameraController : MonoBehaviour
 
         //newRotation *= Quaternion.Euler(Vector3.forward * rotation); // transform.right * movementSpeed * Input.GetAxis("Horizontal");
         float rotationDelta = Input.GetAxis("Rotation");
-        float zoom = Input.GetAxis("Zoom");
 
         newRotation *= Quaternion.Euler(Vector3.forward * rotationDelta * rotationSpeed);
 
         // Debug.Log($"Rotation={rotation} Zoom={zoom}");
 
-        newZoom += zoom * zoomAmount;
-
         //transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         transform.position = newPosition;
         transform.rotation = newRotation;
-        cameraTransform.localPosition = newZoom;
+
+        HandleZoom();
     }
 
+    void HandleZoomOld()
+    {
+        float zoom = Input.GetAxis("Zoom");
+        newZoom += zoom * zoomAmount;
+        cameraTransform.localPosition = newZoom;
+    }
+    void HandleZoom()
+    {
+        float zoomDelta = Input.GetAxis("Zoom");
+
+        if (zoomDelta != 0f)
+        {        
+            newZoom += zoomDelta * zoomAmount;
+            cameraTransform.localPosition = newZoom;
+            /*
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            float entry;
+
+            if (plane.Raycast(ray, out entry))
+            {
+                Vector3 desiredPosition = ray.GetPoint(entry);
+                Debug.Log($"DesiredPosition: {desiredPosition} zoomDelta:{zoomDelta}");
+                float distance = Vector3.Distance(desiredPosition, transform.position);
+                Vector3 direction = Vector3.Normalize(desiredPosition - transform.position) * (distance * zoomDelta);
+
+                //direction = Quaternion.AngleAxis(-90, Vector3.forward) * direction;
+
+                cameraTransform.localPosition += direction;
+            }
+            */
+        }
+        else
+        {
+            Vector3 forward = cameraTransform.TransformDirection(Vector3.forward) * 10;
+            Debug.DrawRay(transform.position, forward, Color.green);
+            Debug.Log($"Drawing ray at {transform.position}");
+        }
+        //newZoom += zoomDelta * zoomAmount;
+        //cameraTransform.localPosition = newZoom;
+    }
+    private void OnDrawGizmosx()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(cameraTransform.position, 1);
+        Gizmos.color = Color.red;
+        Vector3 forward = cameraTransform.TransformDirection(Vector3.forward) * 10;
+        Gizmos.DrawSphere(forward, 2);
+
+        Gizmos.color = Color.green;
+        forward = cameraTransform.TransformDirection(Vector3.forward) * 5;
+        Gizmos.DrawSphere(forward, 2);
+    }
+
+    private void OnGUI()
+    {
+        
+    }
 
 
 
@@ -110,7 +166,7 @@ public class CameraController : MonoBehaviour
 
             rotateStartPosition = rotateCurrentPosition;
 
-            newRotation *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
+            newRotation *= Quaternion.Euler(Vector3.forward * (-difference.x / 5f));
         }
     }
 }
