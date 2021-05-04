@@ -46,7 +46,8 @@ public class HexGrid : MonoBehaviour
     Canvas gridCanvas;
 
 
-    private Color defaultColor = new Color32(0x76, 0x5D, 0x46, 0xFF); // 1, 0.5f, 0.5f); // Color.white; // 765D46
+    public Color defaultColor = new Color32(0x76, 0x5D, 0x46, 0xFF); // 1, 0.5f, 0.5f); // Color.white; // 765D46
+    public Color highlightColor = new Color32(0x86, 0x6D, 0x56, 0xFF); // 1, 0.5f, 0.5f); // Color.white; // 765D46
 
     /// <summary>
     /// Depricated - color used when hex was touched
@@ -96,7 +97,13 @@ public class HexGrid : MonoBehaviour
         cell.transform.localPosition = position;
         cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 
-        cell.color = defaultColor; // new Color(1f, 0.5f, 0.5f);// Color.green;
+        string rivetString = cell.coordinates.ToRivetsString();
+        bool inRangeOfBCPC = rivetString == "1103" || rivetString == "1104";
+        HexCoordinates bcpc = HexCoordinates.FromRivets(11, 5);
+        int distance = bcpc.Distance(cell.coordinates);
+        Debug.Log($"{bcpc} ({bcpc.ToRivetsString()}) to {cell.coordinates} ({cell.coordinates.ToRivetsString()}): {distance}");
+        inRangeOfBCPC = distance <= 5;
+        cell.color = inRangeOfBCPC ? highlightColor : defaultColor; // new Color(1f, 0.5f, 0.5f);// Color.green;
 
         Text label = Instantiate<Text>(cellLabelPrefab);
         label.rectTransform.SetParent(gridCanvas.transform, false);

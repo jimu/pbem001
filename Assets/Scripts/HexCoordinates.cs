@@ -121,4 +121,16 @@ public class HexCoordinates
     {
         return $"{Z+1:D2}{X+8:D2}";
     }
+    public static HexCoordinates FromRivets(int x, int z)
+    {
+        return new HexCoordinates(z-8, x-1);
+    }
+
+    public int Distance(HexCoordinates other)
+    {
+        int dx = Mathf.Abs(X - other.X);
+        int dy = Mathf.Abs(Y - other.Y);
+        int dz = Mathf.Abs(Z - other.Z);
+        return (dx + dy + dz) / 2;
+    }
 }
