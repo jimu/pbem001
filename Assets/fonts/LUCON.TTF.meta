@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f6eef09126fbcaf4490c56ef6a87690f
+guid: 7ae7150f633479d41a81e184319f7393
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Eurostile LT W04 2
+  - Lucida Console
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
