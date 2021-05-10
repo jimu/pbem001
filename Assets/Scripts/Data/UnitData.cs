@@ -7,7 +7,7 @@ public class UnitData : ScriptableObject
 {
     public int id;
     public string code;
-    public GameObject counterPrefab;
+    public Unit counterPrefab;
     public GameObject trayPrefab;
     public Sprite icon;
     public int strength;
