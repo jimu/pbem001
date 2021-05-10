@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3017102047348932566}
   - component: {fileID: 5507097769158816538}
   m_Layer: 0
-  m_Name: Counter3
+  m_Name: BCPCi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 7af805001a681f94ba5efb4cad15be85, type: 3}
+    m_Font: {fileID: 12800000, guid: f6eef09126fbcaf4490c56ef6a87690f, type: 3}
     m_FontSize: 22
     m_FontStyle: 0
     m_BestFit: 0
