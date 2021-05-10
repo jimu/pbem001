@@ -7,7 +7,9 @@ public class HexMapEditor : MonoBehaviour
 {
     public HexGrid hexGrid;
     public Color[] colors;
+    public UnitData[] units;
     private Color activeColor;
+    private UnitData activeUnit;
 
     private void Awake()
     {
@@ -16,7 +18,7 @@ public class HexMapEditor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             HandleInput();
         }
@@ -28,12 +30,13 @@ public class HexMapEditor : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(inputRay, out hit))
         {
-            hexGrid.ColorCell(hit.point, activeColor);
+            hexGrid.ColorCell(hit.point, activeColor, activeUnit);
         }
     }
 
     public void SelectColor(int colorIndex)
     {
         activeColor = colors[colorIndex];
+        activeUnit = units[colorIndex];
     }
 }

@@ -96,7 +96,7 @@ public class CameraController : MonoBehaviour
                 cameraTransform.localPosition += direction;
             }
             */
-        }
+        }/*
         else
         {
             Vector3 forward = cameraTransform.TransformDirection(Vector3.forward) * 10;
@@ -105,6 +105,7 @@ public class CameraController : MonoBehaviour
         }
         //newZoom += zoomDelta * zoomAmount;
         //cameraTransform.localPosition = newZoom;
+        */
     }
     private void OnDrawGizmosx()
     {

@@ -26,12 +26,6 @@ public class Command
 
 
 
-public class Unit
-{
-    UnitType unitType;
-    int id;
-    int hex;
-}
 
 public class CommandDeploy : Command
 {

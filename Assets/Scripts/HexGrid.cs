@@ -45,7 +45,6 @@ public class HexGrid : MonoBehaviour
     /// </summary>
     Canvas gridCanvas;
 
-
     public Color defaultColor = new Color32(0x76, 0x5D, 0x46, 0xFF); // 1, 0.5f, 0.5f); // Color.white; // 765D46
     public Color highlightColor = new Color32(0x86, 0x6D, 0x56, 0xFF); // 1, 0.5f, 0.5f); // Color.white; // 765D46
 
@@ -101,8 +100,8 @@ public class HexGrid : MonoBehaviour
         bool inRangeOfBCPC = rivetString == "1103" || rivetString == "1104";
         HexCoordinates bcpc = HexCoordinates.FromRivets(11, 5);
         int distance = bcpc.Distance(cell.coordinates);
-        Debug.Log($"{bcpc} ({bcpc.ToRivetsString()}) to {cell.coordinates} ({cell.coordinates.ToRivetsString()}): {distance}");
-        inRangeOfBCPC = distance <= 5;
+        // Debug.Log($"{bcpc} ({bcpc.ToRivetsString()}) to {cell.coordinates} ({cell.coordinates.ToRivetsString()}): {distance}");
+        inRangeOfBCPC = distance <= 5; // todo
         cell.color = inRangeOfBCPC ? highlightColor : defaultColor; // new Color(1f, 0.5f, 0.5f);// Color.green;
 
         Text label = Instantiate<Text>(cellLabelPrefab);
@@ -113,17 +112,19 @@ public class HexGrid : MonoBehaviour
     }
 
 
-    public void ColorCell(Vector3 position, Color color)
+    public void ColorCell(Vector3 position, Color color, UnitData data)
     {
         position = transform.InverseTransformPoint(position);
         // Use HexCoordinates to convert mouse position to hex-coordinates
         HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-        Debug.Log($"touched at {position} ({coordinates.ToString()}");
+        //Debug.Log($"touched at {position} ({coordinates.ToString()}");
 
         int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
         HexCell cell = cells[index];
-        cell.color = color;
+        // cell.color = color;
         hexMesh.Triangulate(cells);
+        cell.SetUnit(data);
+        FindObjectOfType<PointTracker>()?.UpdatePoints();
     }
 
 }
