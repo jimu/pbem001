@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitTypeData
   id: 6
   code: BB
-  counterPrefab: {fileID: 0}
+  counterPrefab: {fileID: -3215229199562963911, guid: dc61fbfc975f4094883235c9dc11d670, type: 3}
   trayPrefab: {fileID: 0}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 552679984b7ded34e97e3ca3c95005d9, type: 3}
   strength: 5
-  movementAllowance: 2
+  movementAllowance: 3
   quantity: 8
   deploymentType: 2
   stackingLimit: 2
