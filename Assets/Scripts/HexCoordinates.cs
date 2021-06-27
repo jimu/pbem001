@@ -122,6 +122,11 @@ public class HexCoordinates
         return new HexCoordinates(z-8, x-1);
     }
 
+    public static HexCoordinates FromRivets(int coord)
+    {
+        return new HexCoordinates((coord % 100) - 8, (coord / 100) - 1);
+    }
+
     public int Distance(HexCoordinates other)
     {
         int dx = Mathf.Abs(X - other.X);

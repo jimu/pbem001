@@ -10,7 +10,7 @@ public class EventData : ScriptableObject
 
     public void Raise()
     {
-        Debug.Log($"Event ${this.name} Raised");
+        //Debug.Log($"Event ${this.name} Raised");
         foreach(var e in events)
             e.Invoke();
     }

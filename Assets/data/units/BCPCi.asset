@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   code: BCPCi
-  counterPrefab: {fileID: 561188003730728003, guid: 236f7201dd0acff4dace23d6fd0fe0cf, type: 3}
+  counterPrefab: {fileID: -3215229199562963911, guid: 3593050401404554f927109be5e3c9ac, type: 3}
   trayPrefab: {fileID: 1616363802880025958, guid: d690b5a38d0c3d147a61e451cec53a9b, type: 3}
-  icon: {fileID: 0}
-  strength: 0
+  icon: {fileID: 21300000, guid: 09cb1e83463d6e54ea5fcabf1d9906b9, type: 3}
+  strength: 20
   movementAllowance: 0
   quantity: 1
-  deploymentType: 0
+  deploymentType: 1
   stackingLimit: 0
-  unitType: 0
+  unitType: 6

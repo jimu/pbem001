@@ -108,23 +108,45 @@ public class HexGrid : MonoBehaviour
         label.rectTransform.SetParent(gridCanvas.transform, false);
         label.rectTransform.anchoredPosition = new Vector2(position.x + label_offset_x, position.z);
         //label.text = cell.coordinates.ToStringOnSeparateLines();  // $"{x}\n{z}";
-        label.text = cell.coordinates.ToRivetsString();
+        label.text = cell.coordinates.ToRivetsString(); // + "\n" + cell.coordinates.ToString();
     }
 
 
     public void ColorCell(Vector3 position, Color color, UnitData data)
     {
-        position = transform.InverseTransformPoint(position);
+        position = transform.InverseTransformPoint(position);  // from mouse pixel position to grid pixel position
         // Use HexCoordinates to convert mouse position to hex-coordinates
-        HexCoordinates coordinates = HexCoordinates.FromPosition(position);
+        HexCoordinates coordinates = HexCoordinates.FromPosition(position); // grid X,Y,Z coordinates
         //Debug.Log($"touched at {position} ({coordinates.ToString()}");
 
-        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
-        HexCell cell = cells[index];
+        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
+        HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
         // cell.color = color;
         hexMesh.Triangulate(cells);
         cell.SetUnit(data);
         FindObjectOfType<PointTracker>()?.UpdatePoints();
+    }
+
+
+    public void ShowContents(Vector3 position)
+    {
+        position = transform.InverseTransformPoint(position);  // from mouse pixel position to grid pixel position
+        // Use HexCoordinates to convert mouse position to hex-coordinates
+        HexCoordinates coordinates = HexCoordinates.FromPosition(position); // grid X,Y,Z coordinates
+        //Debug.Log($"touched at {position} ({coordinates.ToString()}");
+
+        int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
+        HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
+        cell.ShowContents();
+    }
+
+
+    public void CreateUnitInCell(HexCoordinates hcoords, int id, UnitData data, bool altColor, int layer)
+    {
+        int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
+        Debug.Log($"I want to create a {data.unitType} at {hcoords} which is cells[{index}/{cells.Length}]");
+        HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
+        cell.AddStackableUnit(id, data, altColor, layer);
     }
 
 }

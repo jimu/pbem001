@@ -19,5 +19,5 @@ public class UnitData : ScriptableObject
 }
 
 
-public enum UnitType { Invalid, TB, LB, RB, JB, BB, BPCPI, BPCPS, BPCPN, MISSILE_AA, MISSILE_AG, MISSILE_AM };
+public enum UnitType { Invalid, LB, RB, JB, BB, TB, BPCPI, BPCPS, BPCPN, MISSILE_AA, MISSILE_AG, MISSILE_AM };
 public enum DeploymentType { Invalid, MapEdge, NearBPCP }

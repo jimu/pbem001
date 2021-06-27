@@ -1,0 +1,13 @@
+<svg id="BB" xmlns="http://www.w3.org/2000/svg" width="203" height="203" viewBox="0 0 203 203">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: red;
+        stroke-width: 1px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M127,12h14l3,8h4l2,9,5,1,1,8-2,1v2l9,1,3,2h6l1,9h5l2,11,6,1v3l-7,7-1,2,8,7h4l2,9-4,5,3,5v5l-8,6h-5l-1,4,8,4v37l-3,3h-2v3l-3,3h-2v2l-4,4h-2v2l-4,4h-2v2l-4,4h-2v2l-3,3H43l-3-3v-2H38l-4-4v-2H32l-5-5v-2H24l-4-4v-2H18l-1-1H13v-7l2-2V135l7-7h8v-9l-2-2v-4H48l4-4v-6H43V98H38l-2,2H30l-5-5V91l2-2H45l2-2V75l-2-2H29l-2-2V63l2-2H27V55l2-2H76l2-2V42l-2-2V36h8l4-4H99l3,3h5v7l2,2v4l-3,3v2h5l4,4v3h4l2-2V52l-4-4h-5V40l2-2V32l2-2V28l-2-2V20l2-2h6l1,1h1l1-1Z"/>
+</svg>

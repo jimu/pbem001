@@ -20,7 +20,7 @@ public class EventData<T> : ScriptableObject
     }
     public void Raise(T value)
     {
-        Debug.Log($"Event raised({value})");
+        //Debug.Log($"Event raised({value})");
         this.value = value;
         if (actions != null)
             actions(value);

@@ -71,6 +71,7 @@ public class CameraController : MonoBehaviour
         newZoom += zoom * zoomAmount;
         cameraTransform.localPosition = newZoom;
     }
+
     void HandleZoom()
     {
         float zoomDelta = Input.GetAxis("Zoom");
@@ -107,6 +108,7 @@ public class CameraController : MonoBehaviour
         //cameraTransform.localPosition = newZoom;
         */
     }
+
     private void OnDrawGizmosx()
     {
         Gizmos.color = Color.yellow;
@@ -130,7 +132,8 @@ public class CameraController : MonoBehaviour
 
     void HandleMouseInput()
     {
-        if (Input.GetMouseButtonDown(1))
+        return;
+        if (Input.GetMouseButtonDown(0))
         {
             Plane plane = new Plane(Vector3.up, Vector3.zero);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -142,7 +145,7 @@ public class CameraController : MonoBehaviour
                 dragStartPosition = ray.GetPoint(entry);
             }
         }
-        else if (Input.GetMouseButton(1))
+        else if (Input.GetMouseButton(0))
         {
             Plane plane = new Plane(Vector3.up, Vector3.zero);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

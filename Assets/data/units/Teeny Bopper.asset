@@ -22,4 +22,4 @@ MonoBehaviour:
   quantity: 4
   deploymentType: 2
   stackingLimit: 2
-  unitType: 1
+  unitType: 5

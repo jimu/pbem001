@@ -30,7 +30,8 @@ public class HexMapEditor : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(inputRay, out hit))
         {
-            hexGrid.ColorCell(hit.point, activeColor, activeUnit);
+ //           hexGrid.ColorCell(hit.point, activeColor, activeUnit);
+            hexGrid.ShowContents(hit.point);
         }
     }
 

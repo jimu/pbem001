@@ -20,15 +20,14 @@ public class SubmitOrders : MonoBehaviour
 
 
     
-    private void Start()
-    {
-        statusText.text = "Ready";
-    }
-
     private void OnEnable()
     {
         Debug.Log("SubmitOrders.OnEnable()");
         GenerateContent();
+        ShowSubmitButton();
+        ShowCloseButton(false);
+        submitButton.interactable = true;
+        statusText.text = "Ready";
     }
 
     private void GenerateContent()
@@ -39,6 +38,14 @@ public class SubmitOrders : MonoBehaviour
             foreach (var unit in hex.units)
                 orders += $"deploy {unit.data.code} {hex.coordinates.ToRivetsString()}\n";
         inputField.text = orders;
+        contentText.text = orders;
+        inputField.verticalScrollbar.value = 0;
+
+        // see https://forum.unity.com/threads/multiline-input-field-with-scrollbar-scrolls-all-the-way-up-on-first-scroll.494388/
+        var textComponent = inputField.textComponent;
+        var textViewport = inputField.textViewport;
+        textComponent.rectTransform.anchoredPosition = new Vector2(textComponent.rectTransform.anchoredPosition.x,
+            (textComponent.preferredHeight - textViewport.rect.height) * 0);
     }
 
 

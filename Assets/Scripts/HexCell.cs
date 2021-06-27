@@ -14,7 +14,7 @@ public class HexCell : MonoBehaviour
 
 
 
-    public void SetUnit(UnitData data)
+    public void SetUnit(UnitData data, bool altColor = false)
     {
         int count = 0;
         const int MAX_UNITS = 2;
@@ -29,20 +29,61 @@ public class HexCell : MonoBehaviour
             {
                 // new unit: delete existing units and add new
                 DeleteUnits();
-                AddUnit(data);
+                AddUnit(data, altColor);
                 return;
             }
         }
 
-        Debug.Log($"SetUnit (count={count})");
+        //Debug.Log($"SetUnit (count={count})");
 
         if (count < MAX_UNITS)
-            AddUnit(data, count);
+            AddUnit(data, altColor, count);
         else
             DeleteUnits();
     }
+    public void ShowContents()
+    {
+        string output = $"Contents of {coordinates}:\n";
+        foreach(var unit in units)
+        {
+            output += $" - {unit.id} {unit.name}\n";
+        }
+        Debug.Log(output);
+    }
 
 
+
+    public void AddStackableUnit(int id, UnitData data, bool altColor = false, int layer = 0)
+    {
+        Unit counter = Instantiate(data.counterPrefab, transform.position, data.counterPrefab.transform.rotation);
+        counter.id = id;
+        if (altColor)
+            counter.MakeRed();
+        if (layer > 0)
+            units.Insert(0, counter);
+        else
+            units.Add(counter);
+
+        RepositionStack();
+    }
+
+    void RepositionStack()
+    {
+        float dz = units.Count > 2 || units.Count > 1 && units[1].data.name == "BCPCi" ? -4f : 2f;
+
+        Vector3 pos = transform.position;
+        pos.y += 0.5f;
+        pos.x -= 0.5f;
+        pos.z += 0.5f;
+
+        foreach (Unit unit in units)
+        {
+            unit.transform.position = pos;
+            pos.y += 2f;
+            pos.x -= 2f;
+            pos.z += dz;
+        }
+    }
 
     void DeleteUnits()
     {
@@ -52,7 +93,7 @@ public class HexCell : MonoBehaviour
         units.Clear();
     }
 
-    void AddUnit(UnitData data, int stackHeight = 0)
+    void AddUnit(UnitData data, bool altColor = false, int stackHeight = 0)
     {
         //Debug.Log($"AddUnit (code={data.code})");
         Vector3 pos = transform.position;
@@ -60,6 +101,8 @@ public class HexCell : MonoBehaviour
         pos.x -= stackHeight * 2f + 0.5f;
         pos.z += stackHeight * 2f + 0.5f;
         Unit counter = Instantiate(data.counterPrefab, pos, data.counterPrefab.transform.rotation);
+        if (altColor)
+            counter.MakeRed();
         units.Add(counter);
     }
 }

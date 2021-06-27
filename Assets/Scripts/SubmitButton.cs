@@ -18,7 +18,7 @@ public class SubmitButton : MonoBehaviour
 
     public void StrengthChanged(int value)
     {
-        Debug.Log($"DisableButtonWhenActive({value})");
+        //Debug.Log($"DisableButtonWhenActive({value})");
         button.interactable = value == 30;
     }
 
