@@ -35,7 +35,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMovementInput();
+        //HandleMovementInput();
         HandleMouseInput();
     }
 
@@ -132,7 +132,6 @@ public class CameraController : MonoBehaviour
 
     void HandleMouseInput()
     {
-        return;
         if (Input.GetMouseButtonDown(0))
         {
             Plane plane = new Plane(Vector3.up, Vector3.zero);
@@ -141,9 +140,7 @@ public class CameraController : MonoBehaviour
             float entry;
 
             if (plane.Raycast(ray, out entry))
-            {
                 dragStartPosition = ray.GetPoint(entry);
-            }
         }
         else if (Input.GetMouseButton(0))
         {

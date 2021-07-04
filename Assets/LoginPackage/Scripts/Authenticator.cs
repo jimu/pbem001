@@ -23,6 +23,12 @@ public class LoginResponse
     public string message; // error message
 }
 
+[Serializable]
+public class NullResponse
+{
+    public string message; // error message
+}
+
 
 
 [Serializable]
@@ -47,4 +53,10 @@ public class Authenticator : MonoBehaviour
         Request<LoginResponse>.Post(this, uri, "{\"name\":\"" + uspec + "\",\"password\":\"" + password + "\"}", callback);
     }
 
+    public void Authenticate(Action<NullResponse, long> callback)
+    {
+        string uri = "https://www.tripleplusungood.com/bopper/api/whoami";
+        Debug.Log($"Authenticate({uri})");
+        Request<NullResponse>.Get(this, uri, callback);
+    }
 }

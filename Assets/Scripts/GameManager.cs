@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
+using WebApi;
 
 
 public enum GameState { Invalid, Title, Login, Play, Help };
@@ -12,7 +13,9 @@ public enum GameState { Invalid, Title, Login, Play, Help };
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject titlePanel;
+    [Obsolete("loginPanel is deprecated, please use login instead.")]
     [SerializeField] GameObject loginPanel;
+    [SerializeField] Login login;
     [SerializeField] GameObject helpPanel;
     [SerializeField] Button fetchButton;
     [SerializeField] public Material redMaterial;
@@ -20,9 +23,9 @@ public class GameManager : MonoBehaviour
     public Matchstate matchstate = new Matchstate();
 
     public static GameManager instance;
+    [HideInInspector]
     public GameData gameData;
 
-   
     public GameState state;
     public bool draggingGizmo = false;
 
@@ -39,13 +42,27 @@ public class GameManager : MonoBehaviour
     {
         SetState(GameState.Title);
     }
+
     public void SetStateHelp()
     {
         SetState(GameState.Help);
     }
-    public void SetStatePlay()
+
+    public void Play()
     {
-        SetState(GameState.Login);
+        AuthenticateAndPlay();
+    }
+    
+    private void AuthenticateAndPlay()
+    {
+        login.Authenticate(AuthenticateAndPlayCallback);
+    }
+
+    private void AuthenticateAndPlayCallback(bool success)
+    {
+        if (success)
+            SetState(GameState.Play);
+        //SetState(success ? GameState.Play : GameState.Login);
     }
 
     public void SetState(GameState state)
@@ -59,6 +76,11 @@ public class GameManager : MonoBehaviour
         fetchButton.interactable = WebApi.AuthToken.HasToken();
     }
 
+
+    public void LoginAndPlayCallback()
+    {
+
+    }
     public void FetchMatchstate()
     {
         Debug.Log($"Fetch Matchstate");

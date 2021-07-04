@@ -13,6 +13,7 @@ namespace WebApi
         const string TOKEN_KEY = "authtoken";
 
         private static string token = "";
+
         static public string SetToken(string token)
         {
             Debug.Log($"SetToken: {token}");
@@ -64,7 +65,7 @@ namespace WebApi
         }
 
 
-        static public IEnumerator IEnumeratorCall(string uri, Method method, string data, Action<T, long> callback)
+        static private IEnumerator IEnumeratorCall(string uri, Method method, string data, Action<T, long> callback)
         {
             UnityWebRequest request = method == Method.GET ?
                 UnityWebRequest.Get(uri) :

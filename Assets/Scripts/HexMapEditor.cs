@@ -15,8 +15,15 @@ public class HexMapEditor : MonoBehaviour
     {
         SelectColor(0);
     }
-
+    /// <summary>
+    /// checks for mouse up every frame, filters on not over game object. Then does a raycast
+    /// </summary>
     void Update()
+    {
+        //CheckForInput();
+    }
+
+    void CheckForInput()
     {
         if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
