@@ -40,8 +40,8 @@ namespace Bopper
 			base.Start();
 
 		}
-		const int START_INDEX = 1000;
-		const int END_INDEX = 3333; // so max visibile is END-START: 11-3 = 8
+		const int START_INDEX = 0;
+		const int END_INDEX = int.MaxValue; // so max visibile is END-START: 11-3 = 8
 
 		/// <summary>
 		/// Notify base adapter than content has changed.  

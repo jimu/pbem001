@@ -38,12 +38,24 @@ public class CommandController : MonoBehaviour
 
     public void Next()
     {
-         Goto(currentIndex + 1);
+        NextWithReveal();
+    }
+    public void NextWithReveal()
+    {
+        if (AtEnd() && commands.AreMore())
+            commands.Reveal(1);
+
+        Goto(currentIndex + 1);
+    }
+
+    public bool AtEnd()
+    {
+        return currentIndex == EndIndex() - 1;
     }
 
     public void Prev()
     {
-        Goto(currentIndex -1 );
+        Goto(currentIndex - 1);
     }
 
     public void First()
@@ -62,7 +74,7 @@ public class CommandController : MonoBehaviour
         if (currentIndex != index && index >= 0 && index < EndIndex())
         {
             currentIndex = index;
-            Debug.Log($"CC: Informing listeners of index change");
+            Debug.Log($"CC: Informing listeners of index change ({index})");
             listeners?.Invoke();
             Debug.Log($"CC: DONE");
         }
