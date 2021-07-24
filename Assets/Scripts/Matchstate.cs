@@ -9,12 +9,14 @@ public class Player
     static int NUM_UNIT_TYPES = 7;
     public int id;
     public string name;
+    public string shortname;
     public UnitType[] pta = new UnitType[NUM_UNIT_TYPES];
 
     public Player(int id, string name)
     {
         this.id = id;
         this.name = name;
+        this.shortname = name.Substring(0, 3).ToUpper();
     }
 
     public new string ToString()
@@ -42,7 +44,10 @@ public class Matchstate
         players.Add(new Player(2, "red"));
     }
 
-
+    /// <summary>
+    /// Dumps the matchstate
+    /// Note:  COMPLETELY UNRELATED TO COMMAND LIST
+    /// </summary>
     public void Dump()
     {
         string output = "";

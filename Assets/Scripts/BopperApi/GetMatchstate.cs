@@ -31,7 +31,8 @@ public class GetMatchstate
         if (statusCode >= 200 && statusCode <= 399 && response.user.avatar != null)
         {
             Debug.Log($"({statusCode})\nSuccess: {response.user.name}\nPlayer: {response.player_id}\nStatus: {response.status}\nMatch: {response.match.name}\nMatchstate:\n{response.matchstate.commands}");
-            GameManager.instance.LoadMatchstateCommands(response.matchstate.commands);
+
+            GameManager.instance.commandController.LoadCommandSet(response.matchstate.commands);
         }
         else /* FAIL */
         {

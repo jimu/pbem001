@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
 using WebApi;
+using Bopper.View;
 
 
 public enum GameState { Invalid, Title, Login, Play, Help };
@@ -19,15 +20,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject helpPanel;
     [SerializeField] Button fetchButton;
     [SerializeField] public Material redMaterial;
+    [SerializeField] Bopper.LogWindow logWindow;
 
     public Matchstate matchstate = new Matchstate();
 
     public static GameManager instance;
     [HideInInspector]
     public GameData gameData;
+    public NotificationList<Command> commands;
+    public CommandController commandController;
 
     public GameState state;
     public bool draggingGizmo = false;
+
+    private void Awake()
+    {
+        commands = commandController.commands;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -93,9 +103,15 @@ public class GameManager : MonoBehaviour
         matchstate.Dump();
     }
 
-    public void LoadMatchstateCommands(string commandString)
+    /// <summary>
+    /// We have a commandString (which is apparently a list of commands [of which Chat's are commands too])
+    /// </summary>
+    /// <param name="commandString"></param>
+    public void xLoadMatchstateCommands(string commandSetText)
     {
-        using (var sr = new StringReader(commandString))
+        commandController.LoadCommandSet(commandSetText);
+        /*
+        using (var sr = new StringReader(commandSetText))
         {
             string line;
             int count = 0;
@@ -106,13 +122,23 @@ public class GameManager : MonoBehaviour
                 Command command = CommandFactory.Make(line);
                 if (command != null)
                 {
-                    matchstate = command.Execute(matchstate);
+                    //matchstate = command.Execute(matchstate);
+                    // Create the text for a LogCommand
+                    // TODO:   These commands are being discarded. They should be loaded into Log.  Execute should not be run here (at least not for the new turn)
+                    //Bopper.LogItem logitem = LogItemFactory.MakeLogItem(command);
+                    logWindow.Add(command);
                     count++;
                 }
             }
 
             Debug.Log($"Commands: {count}/{numlines} parsed\n");
         }
+        */
+    }
 
+
+    public void LoadSampleData()
+    {
+        commandController.LoadCommandSet(Bopper.BopperData.commandset);
     }
 }
