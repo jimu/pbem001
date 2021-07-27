@@ -12,6 +12,7 @@ namespace Bopper.View
         static public Action<Bopper.Unit, string> deployListeners;
         static public Action<Bopper.Unit> undeployListeners;
         static public Action<Bopper.Unit, int, string> moveListeners;
+        static public Action<string> phaseListeners;
     }
 }
 
@@ -37,6 +38,7 @@ namespace Bopper.View.Unity
             ViewMaster.deployListeners += DisplayDeploy;        // this is too late.  Commands that exist will try use.  Listener should be added to a Singleton that knows about all views
             ViewMaster.moveListeners += DisplayMove;
             ViewMaster.undeployListeners += DisplayUndeploy;        // this is too late.  Commands that exist will try use.  Listener should be added to a Singleton that knows about all views
+            ViewMaster.phaseListeners += DisplayPhase;
 
         }
 
@@ -103,6 +105,11 @@ namespace Bopper.View.Unity
             SetStatusMessage(message);
         }
 
+        void DisplayPhase(string message)
+        {
+            StopAnimator();
+            SetStatusMessage(message);
+        }
 
         void DisplayNone()
         {

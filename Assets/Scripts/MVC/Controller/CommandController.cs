@@ -24,6 +24,8 @@ public class CommandController : MonoBehaviour
     {
         foreach (var item in CommandFactory.MakeMany(commandSetText))
             commands.Add(item);
+        currentIndex = -1;
+        First();
     }
 
     public int GetCurrentIndex()

@@ -84,6 +84,7 @@ static public class CommandFactory
     }
 }
 
+// Not a command, rather a way of including a status message in the Matchstate
 public class CommandStatus
 {
     public enum Type { None, Deploy, Phase };
@@ -201,11 +202,20 @@ public class CommandDeploy : Command
         state.units.Add(unit);
         //state.SetStatus(CommandStatus.Type.Deploy, unit.id);
         //state.SetStatus($"DEPLOY {unit.name} in hex {unit.coord}");
-        //view.Display(this);                                             // we can have only one view. Right now it must be Bopper.View.Unity.GameView. Views need to know about Commands
-        ViewMaster.deployListeners?.Invoke(unit, ToString());    // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
+        //view.Display(this);                                               // we can have only one view. Right now it must be Bopper.View.Unity.GameView. Views need to know about Commands
+        ViewMaster.deployListeners?.Invoke(unit, ToString());               // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
         return state;
     }
 
+#if false  // needs to know about ViewMaster. Views don't need to know about Commands, and Commands don't need to know about views.  Both just need to know about interface
+    override public Matchstate Execute(Matchstate state)
+    {
+        unit = new Bopper.Unit(unitType, player_id, coord, layer);
+        state.units.Add(unit);
+        ViewMaster.deployListeners?.Invoke(unit, ToString());               // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
+        return state;
+    }
+#endif
 
 
 
@@ -327,6 +337,8 @@ public class CommandPhase : Command
     override public Matchstate Execute(Matchstate state)
     {
         Debug.Log(ToString());
+        ViewMaster.phaseListeners?.Invoke(name);               // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
+
         return state;
     }
 
