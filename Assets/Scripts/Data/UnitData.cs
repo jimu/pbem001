@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Bopper.View.Unity;
 
-[CreateAssetMenu(fileName = "data\\units\\New Unit", menuName = "Unit")]
+[CreateAssetMenu(fileName = "New Unit", menuName = "Unit")]
 public class UnitData : ScriptableObject
 {
     public int id;

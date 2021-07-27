@@ -22,12 +22,12 @@ namespace Bopper.View
         {
             commands = commandController.commands;
             commands.listeners += OnDataChanged;
-            commandController.listeners += OnIndexChanged;
+            commandController.logListeners += OnIndexChanged;
         }
 
         public void OnDataChanged(int index, int count)
         {
-            Debug.Log($"OnDataChanged({index},{count}) last:{commands.Count - 1} show:{index == commands.Count - 1}");
+            //Debug.Log($"OnDataChanged({index},{count}) last:{commands.Count - 1} show:{index == commands.Count - 1}");
             /*
             if (count == 1 && index == commands.Count - 1)
                 console.LogToConsole($"{commands[index]}");
@@ -36,7 +36,7 @@ namespace Bopper.View
 
         public void OnIndexChanged()
         {
-            Debug.Log($"OnIndexChanged()");
+            //Debug.Log($"OnIndexChanged()");
 
             console.LogToConsole($"{commands[commandController.GetCurrentIndex()]}");
         }

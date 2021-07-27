@@ -48,7 +48,7 @@ namespace Bopper
 			};
 
 		static public string commandset =
-@"0 PHASE Notice: commandset
+@"0 PHASE Notice: commandset 1
 0 PHASE Setup - Introductions
 2 SAY CEASE AND DESIST: LEGAL BOTS DEPLOYED alpha beta delta epsilon alpha beta
 1 SAY Be gone, scoundrel!

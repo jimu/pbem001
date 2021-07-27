@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2be6ba32dccc864f99c8f2acd2d8a9e, type: 3}
   m_Name: Light Bopper
   m_EditorClassIdentifier: 
-  id: 3
+  id: 1
   code: LB
   counterPrefab: {fileID: -3215229199562963911, guid: 545a77fdbbc4ef147af07a16f9be4f1d, type: 3}
   trayPrefab: {fileID: 0}

@@ -18,7 +18,7 @@ public class CommandController : MonoBehaviour
     int lastVisibleIndex;   // typically the last command played back so the player doesn't see future log entries prematurely
     int currentIndex;       // command associated with the currently displayed matchstate
 
-    public UnityAction listeners;
+    public UnityAction logListeners;
 
     public void LoadCommandSet(string commandSetText)
     {
@@ -42,8 +42,8 @@ public class CommandController : MonoBehaviour
     }
     public void NextWithReveal()
     {
-        if (AtEnd() && commands.AreMore())
-            commands.Reveal(1);
+        if (AtEnd() && commands.AnyHiddenAtEnd())
+            commands.RevealAtEnd(1);
 
         Goto(currentIndex + 1);
     }
@@ -73,10 +73,42 @@ public class CommandController : MonoBehaviour
     {
         if (currentIndex != index && index >= 0 && index < EndIndex())
         {
+            PlayTo(index);
             currentIndex = index;
-            Debug.Log($"CC: Informing listeners of index change ({index})");
-            listeners?.Invoke();
-            Debug.Log($"CC: DONE");
+            //Debug.Log($"CC: Informing listeners of index change ({index})");
+            logListeners?.Invoke();
+            //Debug.Log($"CC: DONE");
+        }
+    }
+
+    public void PlayTo(int index)
+    {
+        if (index >= currentIndex)
+            PlayForwardTo(index);
+        else
+            PlayBackTo(index);
+    }
+
+    public void PlayForwardTo(int index)
+    {
+        while (currentIndex < index)
+        {
+            currentIndex++;
+            Debug.Log($"PlayForwardTo({commands[currentIndex]})");
+            GameManager.instance.matchstate = commands[currentIndex].Execute(GameManager.instance.matchstate);
+            logListeners?.Invoke();
+        }
+    }
+
+
+    public void PlayBackTo(int index)
+    {
+        while (currentIndex > index)
+        {
+            GameManager.instance.matchstate = commands[currentIndex].Undo(GameManager.instance.matchstate);
+            currentIndex--;
+            // todo - we could start animations and display status messages for the current record (which is already reflected in the state)
+            logListeners?.Invoke();
         }
     }
 }

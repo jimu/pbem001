@@ -612,7 +612,7 @@ namespace Com.TheFallenGames.OSA.Core
 		/// </summary>
 		public virtual void InsertItems(int index, int itemsCount, bool contentPanelEndEdgeStationary = false, bool keepVelocity = false)
 		{
-            Debug.Log($"OSA.InsertItems({index},{itemsCount})");
+            //Debug.Log($"OSA.InsertItems({index},{itemsCount})");
 			ChangeItemsCount(ItemCountChangeMode.INSERT, itemsCount, index, contentPanelEndEdgeStationary, keepVelocity); 
 		}
 
@@ -632,7 +632,7 @@ namespace Com.TheFallenGames.OSA.Core
 		/// <seealso cref="OnItemIndexChangedDueInsertOrRemove(TItemViewsHolder, int, bool, int)"/>
 		public virtual void ChangeItemsCount(ItemCountChangeMode changeMode, int itemsCount, int indexIfInsertingOrRemoving = -1, bool contentPanelEndEdgeStationary = false, bool keepVelocity = false)
 		{
-            Debug.Log($"ChangeItemsCount({changeMode}, {itemsCount}, {indexIfInsertingOrRemoving})");
+            //Debug.Log($"ChangeItemsCount({changeMode}, {itemsCount}, {indexIfInsertingOrRemoving})");
 			ChangeItemsCountInternal(changeMode, itemsCount, indexIfInsertingOrRemoving, contentPanelEndEdgeStationary, keepVelocity, false);
 		}
 

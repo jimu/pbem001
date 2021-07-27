@@ -16,8 +16,8 @@ using UnityEngine;
 public class NotificationList<T> : List<T>
 {
 	public Action<int, int> listeners;
-	public int visibleStart = 1;
-	public int visibleEnd = 3; // int.MaxValue;
+	public int visibleStart = 0;
+	public int visibleEnd = 1; // int.MaxValue;
 
 
 	public new T this[int index]
@@ -46,7 +46,7 @@ public class NotificationList<T> : List<T>
 
 	public new void Add(T item)
 	{
-		Debug.Log($"Add called");
+		//Debug.Log($"Add called");
 		base.Add(item);
 		NotifyListenersOfVisibleChanges(base.Count - 1, 1);
 
@@ -95,18 +95,19 @@ public class NotificationList<T> : List<T>
 			listeners?.Invoke(start - visibleStart, count * (isDelete ? -1 : 1));
 	}
 
-	public bool AreMore()
-	{
-		return visibleEnd < base.Count;
-	}
-
 	public int RealToVisibleIndex(int real)
     {
 		return real - visibleStart;
     }
 
-	public int Reveal(int revealCount)
+	public bool AnyHiddenAtEnd()
 	{
+		return visibleEnd < base.Count;
+	}
+
+	public int RevealAtEnd(int revealCount)
+	{
+        Debug.Log($"RevealAtEnd");
 		revealCount = Math.Min(revealCount, base.Count - visibleEnd);
 		if (revealCount > 0)
 		{

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;  // Needed to access UnityEngin.UI.Text
+using Bopper.View.Unity;
+
 
 /// <summary>
 ///   A grid of hexes
@@ -141,12 +143,20 @@ public class HexGrid : MonoBehaviour
     }
 
 
-    public void CreateUnitInCell(HexCoordinates hcoords, int id, UnitData data, bool altColor, int layer)
+    public Unit CreateUnitInCell(HexCoordinates hcoords, int id, UnitData data, bool altColor, int layer)
     {
         int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
         Debug.Log($"I want to create a {data.unitType} at {hcoords} which is cells[{index}/{cells.Length}]");
         HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
-        cell.AddStackableUnit(id, data, altColor, layer);
+        return cell.AddStackableUnit(id, data, altColor, layer);
+    }
+
+    public void RemoveUnitFromCell(HexCoordinates hcoords, int id)
+    {
+        int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
+        Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
+        HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
+        cell.RemoveStackableUnit(id);
     }
 
 }

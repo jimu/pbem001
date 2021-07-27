@@ -2,33 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
+using RMatch = System.Text.RegularExpressions.Match;
 
-public class Unit : MonoBehaviour
-{
-    public UnitData data;
-    public int id;
-
-    public Unit(int id, UnitData data)
-    {
-        this.id = id;
-        this.data = data;
-    }
-
-    private void OnMouseDown()
-    {
-        Debug.Log("Unit {this} Clicked");
-    }
-
-    public void MakeRed()
-    {
-        var mr = GetComponentInChildren<MeshRenderer>();
-        mr.materials = new Material[] { GameManager.instance.redMaterial };
-        foreach (var text in GetComponentsInChildren<UnityEngine.UI.Text>())
-            text.color = Color.white;
-        foreach (var sprite in GetComponentsInChildren<SpriteRenderer>())
-            sprite.color = Color.white;
-    }
-}
 
 namespace Bopper
 {
@@ -41,27 +17,51 @@ namespace Bopper
         public string name;
         public UnitData data;
         public int layer;
+        public long guid;
 
         static List<Unit> units = new List<Unit>();
+        static Dictionary<long, Unit> guidToUnit = new Dictionary<long, Unit>();
 
         public Unit(UnitType utype, int player_id, int coord, int layer)
         {
+            Debug.Log($"Unit({utype}) CTOR");
             Debug.Assert(utype > 0, "UnitType must be > 0");
             this.player_id = player_id;
             this.coord = coord;
             this.layer = layer;
             SetData(utype);
+            Debug.Log($"Data is {this.data}");
 
             id = units.Count;
-            units.Add(this);
+            int num = id; // todo
+            name = $"{utype}-{num}";
 
-            name = $"{utype}-{id}";
+            units.Add(this);
+            guidToUnit[Guid(player_id, utype, num)] = this;
+        }
+
+        static public long Guid(int player_id, string unit_id)
+        {
+            RMatch match = Regex.Match(unit_id, @"(LB|RB|JB|BB|TB|BCPC)-?(\d+)");
+            if (match.Success)
+            {
+                UnitType utype = Command.StringToUnitType(match.Groups[0].Value);
+                int num = Int32.Parse(match.Groups[1].Value);
+                return player_id * 100000 +(int)utype * 10000 + num;
+            }
+            return -1;
+        }
+
+        static public long Guid(int player_id, UnitType utype, int num)
+        {
+            return player_id * 100000 + (int)utype * 10000 + num;
         }
 
         private void SetData(UnitType utype)
         {
             data = GameManager.instance.gameData.unitData[(int)utype];
-            Debug.Log($"Setting data to {utype}({(int)utype}): [{data.name}, {data.unitType}]");
+            if (data == null)
+                throw new Exception("GameManager GameData UnitData entry missing for {utype}");
         }
 
 

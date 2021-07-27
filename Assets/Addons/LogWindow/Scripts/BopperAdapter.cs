@@ -61,7 +61,7 @@ namespace Bopper
 			}
 
 			int count = Math.Abs(operation_count); 
-			Debug.Log($"BopperAdapter.OnDataChanged(i={index}, c={count}, oc={operation_count}) Data size={_data.Count}");
+			//Debug.Log($"BopperAdapter.OnDataChanged(i={index}, c={count}, oc={operation_count}) Data size={_data.Count}");
 
 			if (index < START_INDEX)
 			{
@@ -74,9 +74,9 @@ namespace Bopper
 				count = END_INDEX - index;
 			}
 
-			Debug.Log($"X                          (i={index}, c={count}, oc={operation_count}) Data size={_data.Count}");
-			if (count > 0)
-				Debug.Log($"We are about to notify OSA that data at index {index} count={count} has changed. The adujsted index is {index - START_INDEX}. The data is {_data[index]}");
+			//Debug.Log($"X                          (i={index}, c={count}, oc={operation_count}) Data size={_data.Count}");
+			//if (count > 0)
+				//Debug.Log($"We are about to notify OSA that data at index {index} count={count} has changed. The adujsted index is {index - START_INDEX}. The data is {_data[index]}");
 			if (count > 0)
 				if (operation_count > 0)
 					InsertItems(index - START_INDEX, count);
@@ -92,7 +92,7 @@ namespace Bopper
 
 		protected override BopperViewsHolder CreateViewsHolder(int itemIndex)
 		{
-            Debug.Log($"BopperViewsHolder.CreateViewsHolder({itemIndex})");
+            //Debug.Log($"BopperViewsHolder.CreateViewsHolder({itemIndex})");
 			var type = GetViewData(itemIndex).GetType();
 
 			RectTransform prefab;
@@ -113,7 +113,7 @@ namespace Bopper
 				prefab = _Params.commandPrefab;
 				vh = new BopperViewsHolderCommand();
 			}
-            Debug.Log($"CreateVH: {itemIndex}");
+            //Debug.Log($"CreateVH: {itemIndex}");
 			vh.Init(prefab, _Params.Content, itemIndex);
 			vh.SetItemClickAction(clickAction);  // clicking the vh will call bopperAdapter.clickAction
 
@@ -308,7 +308,7 @@ namespace Bopper
 
 		protected void OnClicked()
         {
-			Debug.Log($"OnClicked(id:{id} ItemIndex:{ItemIndex})");
+			//Debug.Log($"OnClicked(id:{id} ItemIndex:{ItemIndex})");
 			clickAction?.Invoke(ItemIndex);
         }
 		

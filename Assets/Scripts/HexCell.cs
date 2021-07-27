@@ -5,104 +5,124 @@ using System.Collections.Generic;
 /// <summary>
 /// A single hex
 /// </summary>
-public class HexCell : MonoBehaviour
+/// 
+namespace Bopper.View.Unity
 {
-    public HexCoordinates coordinates;
-
-    public Color color;
-    public List<Unit> units = new List<Unit>();
-
-
-
-    public void SetUnit(UnitData data, bool altColor = false)
+    public class HexCell : MonoBehaviour
     {
-        int count = 0;
-        const int MAX_UNITS = 2;
+        public HexCoordinates coordinates;
 
-        foreach(Unit u in units)
+        public Color color;
+        public List<Unit> units = new List<Unit>();
+
+
+
+        public void SetUnit(UnitData data, bool altColor = false)
         {
-            if (u.data == data)
+            int count = 0;
+            const int MAX_UNITS = 2;
+
+            foreach (Unit u in units)
             {
-                count++;
+                if (u.data == data)
+                {
+                    count++;
+                }
+                else
+                {
+                    // new unit: delete existing units and add new
+                    DeleteUnits();
+                    AddUnit(data, altColor);
+                    return;
+                }
             }
+
+            //Debug.Log($"SetUnit (count={count})");
+
+            if (count < MAX_UNITS)
+                AddUnit(data, altColor, count);
             else
-            {
-                // new unit: delete existing units and add new
                 DeleteUnits();
-                AddUnit(data, altColor);
-                return;
+        }
+        public void ShowContents()
+        {
+            string output = $"Contents of {coordinates}:\n";
+            foreach (var unit in units)
+            {
+                output += $" - {unit.id} {unit.name}\n";
+            }
+            Debug.Log(output);
+        }
+
+
+
+        public Unit AddStackableUnit(int id, UnitData data, bool altColor = false, int layer = 0)
+        {
+            Debug.Log($"AddStackableUnit({id}, {data.name}, {altColor}, {layer}) data.counterPrefab={data.counterPrefab} this={this.name}");
+            Unit counter = Instantiate(data.counterPrefab, transform.position, data.counterPrefab.transform.rotation);
+            counter.id = id;
+            if (altColor)
+                counter.MakeRed();
+            if (layer > 0)
+                units.Insert(0, counter);
+            else
+                units.Add(counter);
+
+            RepositionStack();
+
+            return counter;
+        }
+
+        public void RemoveStackableUnit(int id)
+        {
+            foreach (var unit in units)
+                if (unit.id == id)
+                {
+                    units.Remove(unit);
+                    Destroy(unit.gameObject);
+                    break;
+                }
+
+            RepositionStack();
+        }
+
+        void RepositionStack()
+        {
+            float dz = units.Count > 2 || units.Count > 1 && units[1].data.name == "BCPCi" ? -4f : 2f;
+
+            Vector3 pos = transform.position;
+            pos.y += 0.5f;
+            pos.x -= 0.5f;
+            pos.z += 0.5f;
+
+            foreach (Unit unit in units)
+            {
+                unit.transform.position = pos;
+                pos.y += 2f;
+                pos.x -= 2f;
+                pos.z += dz;
             }
         }
 
-        //Debug.Log($"SetUnit (count={count})");
-
-        if (count < MAX_UNITS)
-            AddUnit(data, altColor, count);
-        else
-            DeleteUnits();
-    }
-    public void ShowContents()
-    {
-        string output = $"Contents of {coordinates}:\n";
-        foreach(var unit in units)
+        void DeleteUnits()
         {
-            output += $" - {unit.id} {unit.name}\n";
+            //Debug.Log($"DeleteUnits()");
+            foreach (Unit u in units)
+                DestroyImmediate(u.gameObject);
+            units.Clear();
         }
-        Debug.Log(output);
-    }
 
-
-
-    public void AddStackableUnit(int id, UnitData data, bool altColor = false, int layer = 0)
-    {
-        Unit counter = Instantiate(data.counterPrefab, transform.position, data.counterPrefab.transform.rotation);
-        counter.id = id;
-        if (altColor)
-            counter.MakeRed();
-        if (layer > 0)
-            units.Insert(0, counter);
-        else
+        void AddUnit(UnitData data, bool altColor = false, int stackHeight = 0)
+        {
+            //Debug.Log($"AddUnit (code={data.code})");
+            Vector3 pos = transform.position;
+            pos.y += stackHeight * 2f + 0.5f;
+            pos.x -= stackHeight * 2f + 0.5f;
+            pos.z += stackHeight * 2f + 0.5f;
+            Unit counter = Instantiate(data.counterPrefab, pos, data.counterPrefab.transform.rotation);
+            if (altColor)
+                counter.MakeRed();
             units.Add(counter);
-
-        RepositionStack();
-    }
-
-    void RepositionStack()
-    {
-        float dz = units.Count > 2 || units.Count > 1 && units[1].data.name == "BCPCi" ? -4f : 2f;
-
-        Vector3 pos = transform.position;
-        pos.y += 0.5f;
-        pos.x -= 0.5f;
-        pos.z += 0.5f;
-
-        foreach (Unit unit in units)
-        {
-            unit.transform.position = pos;
-            pos.y += 2f;
-            pos.x -= 2f;
-            pos.z += dz;
         }
-    }
-
-    void DeleteUnits()
-    {
-        //Debug.Log($"DeleteUnits()");
-        foreach (Unit u in units)
-            DestroyImmediate(u.gameObject);
-        units.Clear();
-    }
-
-    void AddUnit(UnitData data, bool altColor = false, int stackHeight = 0)
-    {
-        //Debug.Log($"AddUnit (code={data.code})");
-        Vector3 pos = transform.position;
-        pos.y += stackHeight * 2f + 0.5f;
-        pos.x -= stackHeight * 2f + 0.5f;
-        pos.z += stackHeight * 2f + 0.5f;
-        Unit counter = Instantiate(data.counterPrefab, pos, data.counterPrefab.transform.rotation);
-        if (altColor)
-            counter.MakeRed();
-        units.Add(counter);
     }
 }

@@ -26,13 +26,13 @@ namespace Bopper
 
 			// LogWindow will be notified of viewholder clicks
 			adapter.clickAction += ItemClicked;
-			adapter.commandController.listeners += OnCurrentItemChanged;
+			adapter.commandController.logListeners += OnCurrentItemChanged;
 		}
 
 		public void OnCurrentItemChanged()
         {
 			SetCurrent(adapter.commandController.GetCurrentIndex());
-            Debug.Log($"LogWindow.OnCurrentItemChanged()");
+            //Debug.Log($"LogWindow.OnCurrentItemChanged()");
         }
 
 		public void OnChatSubmit(string text)
@@ -56,7 +56,7 @@ namespace Bopper
 
 		public void ItemClicked(int index)
         {
-			Debug.Log($"LogWindow.ItemClicked({index})");
+			//Debug.Log($"LogWindow.ItemClicked({index})");
 			adapter.commandController.Goto(index);
 		}
 

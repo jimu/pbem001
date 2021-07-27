@@ -2,28 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class View : MonoBehaviour
+public class ViewX : MonoBehaviour
 {
     [SerializeField] HexGrid hexGrid;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [System.Obsolete("Method is obsolete.", true)]
 
     public void DeployUnit(Bopper.Unit unit)
     {
         DeployUnit(unit.id, unit.name, unit.player_id, unit.data, unit.coord, unit.layer);
     }
 
+    [System.Obsolete("Method is obsolete.", true)]
     public void DeployUnit(int id, string name, int player_id, UnitData data, int coord, int layer)
     {
         Debug.Log($"View.DeployUnit({id}, utype={data.unitType}, layer={layer})");
@@ -40,6 +31,8 @@ public class View : MonoBehaviour
     public void UndeployUnit(Bopper.Unit unit)
     {
         Debug.Log($"View.UndeployUnit({unit.id})"); //todo
+        HexCoordinates hcoord = HexCoordinates.FromRivets(unit.coord);
+        hexGrid.RemoveUnitFromCell(hcoord, unit.id);
     }
 
 }

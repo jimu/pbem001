@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
 using WebApi;
-using Bopper.View;
+using Bopper.View.Unity;
 
 
 public enum GameState { Invalid, Title, Login, Play, Help };
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         SetState(GameState.Title);
         gameData = GetComponent<GameData>();
-        Command.view = GetComponent<View>();
+        Command.view = GetComponent<GameView>();
     }
 
     public void SetStateTitle()
@@ -137,8 +137,8 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void LoadSampleData()
+    public void LoadSampleData(string commandSet = null)
     {
-        commandController.LoadCommandSet(Bopper.BopperData.commandset);
+        commandController.LoadCommandSet(commandSet ?? Bopper.BopperData.commandset);
     }
 }

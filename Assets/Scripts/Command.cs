@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity;
 using System.Text.RegularExpressions;
+using Bopper.View;
 
 // Commands
 // deploy <type> <coord>
@@ -17,7 +18,7 @@ using System.Text.RegularExpressions;
 abstract public class Command
 {
     static public string token;
-    static public View view;
+    static public Bopper.View.Unity.GameView view;
     public int player_id;
 
     public long id; // for OSA
@@ -80,6 +81,20 @@ static public class CommandFactory
             }
         }
         return commands;
+    }
+}
+
+public class CommandStatus
+{
+    public enum Type { None, Deploy, Phase };
+
+    public Type type = Type.None;
+    public long parameter1;
+
+    public CommandStatus(Type type = Type.None, long parameter1 = 0)
+    {
+        this.type = type;
+        this.parameter1 = parameter1;
     }
 }
 
@@ -169,12 +184,25 @@ public class CommandDeploy : Command
     /// <returns></returns>
     override public Matchstate Execute(Matchstate state)
     {
-        Debug.Log(ToString());
+        Debug.Log($"CommandDeploy({ToString()})");
         unit = new Bopper.Unit(unitType, player_id, coord, layer);
+        if (unit == null)
+            throw new Exception($"UNIT IS NULL");
+
+        Debug.Assert(unit.data != null, "UNIT DATA IS NULL");
+        if (unit.data == null)
+            throw new Exception($"unit.name={unit.name}, unit.data={unit.data.name}: UNIT DATA IS NULL");
+        
+        Debug.Assert(unit.data.counterPrefab != null, $"unit.data.name={unit.data.name} does not have a counterPrefab");
+        if (unit.data == null || unit.data.counterPrefab == null)
+            throw new Exception($"unit.data.name={unit.data.name} str={unit.data.strength} does not have a counterPrefab");
         Debug.Log($"{unit} utype={unit.data.unitType}");
-        index = state.units.Count;
+        //index = state.units.Count;
         state.units.Add(unit);
-        view.DeployUnit(unit);      // must pass on unitType, player_id, id, name, layer
+        //state.SetStatus(CommandStatus.Type.Deploy, unit.id);
+        //state.SetStatus($"DEPLOY {unit.name} in hex {unit.coord}");
+        //view.Display(this);                                             // we can have only one view. Right now it must be Bopper.View.Unity.GameView. Views need to know about Commands
+        ViewMaster.deployListeners?.Invoke(unit, ToString());    // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
         return state;
     }
 
@@ -183,8 +211,10 @@ public class CommandDeploy : Command
 
     override public Matchstate Undo(Matchstate state)
     {
-        view.UndeployUnit(unit);
-        state.units.RemoveAt(index);
+        ViewMaster.undeployListeners?.Invoke(unit);    // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
+        //view.DisplayUndeploy(unit);
+        //state.units.RemoveAt(index);
+        state.units.Remove(unit);
         return state;
     }
 
@@ -199,18 +229,21 @@ public class CommandMove : Command
 //########################################## MOVE ################################################
 {
     static public new string token = "MOVE";
-    public string unit_id;
+    public string unit_name;
     public int coord;
     public int layer;
     public int index;
     public Bopper.Unit unit;
 
+    public int prevCoord;
+    public int prevLayer;
 
 
-    public CommandMove(int player_id, string unit_id, int hex, int layer = 0)
+
+    public CommandMove(int player_id, string unit_name, int hex, int layer = 0)
     {
         this.player_id = player_id;
-        this.unit_id = unit_id;
+        this.unit_name = unit_name;
         this.coord = hex;
         this.layer = layer;
     }
@@ -222,7 +255,7 @@ public class CommandMove : Command
     public CommandMove(string[] tokens)
     {
         player_id = Int32.Parse(tokens[0]);
-        unit_id = tokens[2];
+        unit_name = tokens[2];
         coord = Int32.Parse(tokens[3]);
         layer = tokens.Length > 4 ? Int32.Parse(tokens[4]) : 0;
     }
@@ -236,27 +269,31 @@ public class CommandMove : Command
     override public Matchstate Execute(Matchstate state)
     {
         Debug.Log(ToString());
-        // unit = FindUnit(player_id, unit_id);
-        Debug.Log($"{unit_id}");
-        index = state.units.Count;
-        state.units.Add(unit);
-        view.DeployUnit(unit);      // must pass on unitType, player_id, id, name, layer
+        unit = state.findUnit(player_id, unit_name);
+
+        prevCoord = unit.coord;
+        prevLayer = unit.layer;
+
+        prevCoord = unit.coord;
+        unit.coord = coord;
+        ViewMaster.moveListeners?.Invoke(unit, prevCoord, ToString());    // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
+
         return state;
     }
 
 
     override public Matchstate Undo(Matchstate state)
     {
-        view.UndeployUnit(unit);
-        state.units.RemoveAt(index);
+        //view.UndeployUnit(unit);
+        //state.units.RemoveAt(index);
         return state;
     }
 
     public override string ToString()
     {
         return layer > 0 ?
-            $"Move {unit_id} to factory" :
-            $"Move {unit_id} to {coord}";
+            $"Move {unit_name} to factory" :
+            $"Move {unit_name} to {coord}";
     }
 }
 public class CommandPhase : Command

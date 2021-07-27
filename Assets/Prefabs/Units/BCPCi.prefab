@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 389125808356571812}
   - component: {fileID: 389125808356571813}
   - component: {fileID: -3215229199562963911}
+  - component: {fileID: 228711795752752974}
   m_Layer: 0
   m_Name: BCPCi
   m_TagString: Untagged
@@ -286,10 +287,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 389125808356571810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d7b207234fd09e4389ab1d23f0282d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 49842cccf14577543bf4a3863c8286c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: a28d5a9f50dd1e343abe96ed76d55bb2, type: 2}
+  data: {fileID: 11400000, guid: 0dd107477455fc9498d7c2105ea0b27f, type: 2}
+  id: 6
+--- !u!95 &228711795752752974
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389125808356571810}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0927b54e1f7da474bac8b0ec2395ec10, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &389125808626175890
 GameObject:
   m_ObjectHideFlags: 0

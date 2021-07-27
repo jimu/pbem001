@@ -36,12 +36,22 @@ public class Matchstate
     public List<Bopper.Unit>   units    = new List<Bopper.Unit>();
     public List<string> messages = new List<string>();
     public List<Player> players = new List<Player>();
+    public CommandStatus commandStatus = new CommandStatus();
 
     public Matchstate()
     {
         players.Add(new Player(0, "neutral"));
         players.Add(new Player(1, "white"));
         players.Add(new Player(2, "red"));
+    }
+
+    [System.Obsolete]
+    public Bopper.Unit findUnit(int player_id, string name)     // todo use guid
+    {
+        foreach (var unit in units)
+            if (unit.name == name && unit.player_id == player_id)
+                return unit;
+        return null;
     }
 
     /// <summary>
@@ -66,5 +76,11 @@ public class Matchstate
             output += "Messages:\n - " + string.Join("\n - ", messages);
 
         Debug.Log(output);
+    }
+
+    public void SetStatus(CommandStatus.Type type = CommandStatus.Type.None, long parameter1 = 0)
+    {
+        commandStatus.type = type;
+        commandStatus.parameter1 = parameter1;
     }
 }
