@@ -115,9 +115,15 @@ namespace Bopper.View.Unity
             return null;
         }
 
+        bool IsFactoryStack()
+        {
+            return units.Count > 2 || units.Count == 2 && (units[0].data.stackingLimit == 0 || units[1].data.stackingLimit == 0);
+        }
+
         void RepositionStack()
         {
-            float dz = units.Count > 2 || units.Count > 1 && units[1].data.name == "BCPCi" ? -4f : 2f;
+            // if there are more than 2 units, we are in a BCPC and we want to show unit names to right
+            float dz = IsFactoryStack() ? -3f : 2f;
 
             Vector3 pos = transform.position;
             pos.y += 0.5f;

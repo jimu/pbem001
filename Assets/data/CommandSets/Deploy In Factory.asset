@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154ff78c588fe37408e40bfb46c40a8e, type: 3}
+  m_Name: Deploy In Factory
+  m_EditorClassIdentifier: 
+  commandSet: '0 PHASE Deploy & move from factory
+
+    1 DEPLOY BCPC 0108
+
+    1
+    DEPLOY BB 0109 BB1
+
+    1 DEPLOY JB 0108 JB1
+
+    1 DEPLOY RB 0108.1 RB1
+
+    1
+    DEPLOY JB 0108
+
+    1 DEPLOY RB 0108.1
+
+    1 MOVE JB1 0208
+
+    1 MOVE JB1 0308
+
+    1
+    MOVE JB1 0408
+
+    1 MOVE RB1 0208
+
+    1 MOVE RB1 0308
+
+    1 MOVE RB1 0408
+
+    0
+    PHASE End'
