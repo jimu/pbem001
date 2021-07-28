@@ -156,13 +156,15 @@ public class CommandDeploy : Command
     public int layer;
     public int index;
     public Bopper.Unit unit;
+    public string name;
 
-    public CommandDeploy(int player_id, UnitType unitType, int hex, int layer = 0)
+    public CommandDeploy(int player_id, UnitType unitType, int hex, int layer = 0, string name = "")
     {
         this.player_id = player_id;
-        this.unitType = unitType;
-        this.coord = hex;
-        this.layer = layer;
+        this.unitType  = unitType;
+        this.coord     = hex;
+        this.layer     = layer;
+        this.name      = name;
     }
 
     /// <summary>
@@ -173,8 +175,19 @@ public class CommandDeploy : Command
     {
         player_id = Int32.Parse(tokens[0]);
         unitType = StringToUnitType(tokens[2]);
-        coord = Int32.Parse(tokens[3]);
-        layer = tokens.Length > 4 ? Int32.Parse(tokens[4]) : 0;
+        //coord = Int32.Parse(tokens[3]);
+        //layer = tokens.Length > 4 ? Int32.Parse(tokens[4]) : 0;
+        name = tokens.Length > 4 ? tokens[4] : "";
+        ParseCoord(tokens[3], out coord, out layer);
+        Debug.Log($"CommandDeploy: coord:{coord} layer:{layer} name:{name}");
+    }
+
+    static public bool ParseCoord(string token, out int coord, out int layer)
+    {
+        int dotAt = token.IndexOf(".");
+        coord = dotAt > 0 ? Int32.Parse(token.Substring(0,dotAt)) : Int32.Parse(token);
+        layer = dotAt > 0 ? Int32.Parse(token.Substring(dotAt + 1)) : 0;
+        return true;
     }
 
     /// <summary>
@@ -186,7 +199,7 @@ public class CommandDeploy : Command
     override public Matchstate Execute(Matchstate state)
     {
         Debug.Log($"CommandDeploy({ToString()})");
-        unit = new Bopper.Unit(unitType, player_id, coord, layer);
+        unit = new Bopper.Unit(unitType, player_id, coord, layer, name);
         if (unit == null)
             throw new Exception($"UNIT IS NULL");
 
@@ -248,8 +261,6 @@ public class CommandMove : Command
     public int prevCoord;
     public int prevLayer;
 
-
-
     public CommandMove(int player_id, string unit_name, int hex, int layer = 0)
     {
         this.player_id = player_id;
@@ -281,12 +292,13 @@ public class CommandMove : Command
         Debug.Log(ToString());
         unit = state.findUnit(player_id, unit_name);
 
+        Debug.Log($"Move: unit={unit}");
         prevCoord = unit.coord;
         prevLayer = unit.layer;
 
         prevCoord = unit.coord;
         unit.coord = coord;
-        ViewMaster.moveListeners?.Invoke(unit, prevCoord, ToString());    // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
+        ViewMaster.moveListeners?.Invoke(unit, prevCoord, prevLayer, ToString());    // we don't need to know about anything about any view(s). Views don't need to know anything about Commands
 
         return state;
     }
@@ -296,6 +308,10 @@ public class CommandMove : Command
     {
         //view.UndeployUnit(unit);
         //state.units.RemoveAt(index);
+
+        unit.coord = prevCoord;
+        unit.layer = prevLayer;
+        ViewMaster.unmoveListeners?.Invoke(unit, coord, layer);
         return state;
     }
 

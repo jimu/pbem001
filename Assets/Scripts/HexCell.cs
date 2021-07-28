@@ -56,9 +56,9 @@ namespace Bopper.View.Unity
 
 
 
-        public Unit AddStackableUnit(int id, UnitData data, bool altColor = false, int layer = 0)
+        public Unit CreateStackableUnit(int id, UnitData data, bool altColor = false, int layer = 0)
         {
-            Debug.Log($"AddStackableUnit({id}, {data.name}, {altColor}, {layer}) data.counterPrefab={data.counterPrefab} this={this.name}");
+            Debug.Log($"CreateStackableUnit({id}, {data.name}, {altColor}, {layer}) data.counterPrefab={data.counterPrefab} this={this.name}");
             Unit counter = Instantiate(data.counterPrefab, transform.position, data.counterPrefab.transform.rotation);
             counter.id = id;
             if (altColor)
@@ -72,18 +72,47 @@ namespace Bopper.View.Unity
 
             return counter;
         }
+        public Unit AddStackableUnit(Unit counter, int layer = 0)
+        {
+            Debug.Log($"AddStackableUnit({counter.id}, {counter.name}");
 
-        public void RemoveStackableUnit(int id)
+            if (layer > 0)
+                units.Insert(0, counter);
+            else
+                units.Add(counter);
+
+            RepositionStack();
+
+            return counter;
+        }
+
+        public void DestroyStackableUnit(int id)
         {
             foreach (var unit in units)
                 if (unit.id == id)
                 {
                     units.Remove(unit);
                     Destroy(unit.gameObject);
-                    break;
+                    RepositionStack();
+                    return;
                 }
+        }
 
-            RepositionStack();
+        public Unit RemoveStackableUnit(int id)
+        {
+            foreach (Unit unit in units)
+            {
+                Debug.Log($"RemoveStackableUnit({id}) checking against {unit.id}");
+                if (unit.id == id)
+                {
+                    units.Remove(unit);
+                    RepositionStack();
+                    return unit;
+                }
+            }
+
+            throw new System.Exception($"RemoveStackableUnit: cannot find unit id={id}");
+            return null;
         }
 
         void RepositionStack()

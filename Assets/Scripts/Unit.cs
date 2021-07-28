@@ -22,9 +22,9 @@ namespace Bopper
         static List<Unit> units = new List<Unit>();
         static Dictionary<long, Unit> guidToUnit = new Dictionary<long, Unit>();
 
-        public Unit(UnitType utype, int player_id, int coord, int layer)
+        public Unit(UnitType utype, int player_id, int coord, int layer = 0, string name = "")
         {
-            Debug.Log($"Unit({utype}) CTOR");
+            Debug.Log($"Unit({utype}, {name}) CTOR");
             Debug.Assert(utype > 0, "UnitType must be > 0");
             this.player_id = player_id;
             this.coord = coord;
@@ -34,7 +34,7 @@ namespace Bopper
 
             id = units.Count;
             int num = id; // todo
-            name = $"{utype}-{num}";
+            this.name = name.Length > 0 ? name : $"{utype}-{num}";
 
             units.Add(this);
             guidToUnit[Guid(player_id, utype, num)] = this;

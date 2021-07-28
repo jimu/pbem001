@@ -11,7 +11,8 @@ namespace Bopper.View
         static public Action resetListeners;
         static public Action<Bopper.Unit, string> deployListeners;
         static public Action<Bopper.Unit> undeployListeners;
-        static public Action<Bopper.Unit, int, string> moveListeners;
+        static public Action<Bopper.Unit, int, int, string> moveListeners;
+        static public Action<Bopper.Unit, int, int> unmoveListeners;
         static public Action<string> phaseListeners;
     }
 }
@@ -39,6 +40,7 @@ namespace Bopper.View.Unity
             ViewMaster.moveListeners += DisplayMove;
             ViewMaster.undeployListeners += DisplayUndeploy;        // this is too late.  Commands that exist will try use.  Listener should be added to a Singleton that knows about all views
             ViewMaster.phaseListeners += DisplayPhase;
+            ViewMaster.unmoveListeners += DisplayUnmove;
 
         }
 
@@ -89,21 +91,47 @@ namespace Bopper.View.Unity
             HexCoordinates hcoord = HexCoordinates.FromRivets(unit.coord);
 
             //idToUnit[unit.id] = counter;
-            hexGrid.RemoveUnitFromCell(hcoord, unit.id);
+            hexGrid.DestroyUnitInCell(hcoord, unit.id);
 
             //SetAnimation(counter.GetComponent<Animation>());
             //SetStatusMessage(message);
         }
 
 
-        void DisplayMove(Bopper.Unit unit, int coord, string message)
+        void DisplayMove(Bopper.Unit unit, int coord, int layer, string message)
         {
-            HexCoordinates hcoord = HexCoordinates.FromRivets(unit.coord);
+            HexCoordinates startHcoord = HexCoordinates.FromRivets(coord);
+            HexCoordinates destHcoord = HexCoordinates.FromRivets(unit.coord);
 
             Unit counter = idToUnit[unit.id];
 
+            Vector3 startPos = hexGrid.HexCoordinatesToPosition(startHcoord);
+            Vector3 endPos = hexGrid.HexCoordinatesToPosition(destHcoord);
+            hexGrid.RemoveUnitInCell(startHcoord, unit.id);
+            hexGrid.AddUnitToCell(destHcoord, counter, layer);
+            counter.transform.position = startPos; // try to prevent flash
+
+            counter.GetComponent<MoveCommandAnimation>().Init(startPos, endPos);
+            StartAnimator(counter.GetComponent<Animator>(), "Moving");
             SetStatusMessage(message);
         }
+
+
+        void DisplayUnmove(Bopper.Unit unit, int coord, int layer)
+        {
+            HexCoordinates startHcoord = HexCoordinates.FromRivets(coord);
+            HexCoordinates destHcoord = HexCoordinates.FromRivets(unit.coord);
+
+            Unit counter = idToUnit[unit.id];
+            Debug.Log($"I'm going to move unit from {startHcoord}({coord}) to {destHcoord}({unit.coord})");
+            hexGrid.RemoveUnitInCell(startHcoord, unit.id);
+            hexGrid.AddUnitToCell(destHcoord, counter, layer);
+
+            StopAnimator();
+            SetStatusMessage();
+        }
+
+
 
         void DisplayPhase(string message)
         {
@@ -121,9 +149,11 @@ namespace Bopper.View.Unity
         void StartAnimator(Animator animator, string parameter)
         {
             StopAnimator();
+            animator.Rebind();
             currentAnimator = animator;
             currentParameter = parameter;
             animator.SetBool(parameter, true);
+            Debug.Log($"I just set animation for {animator.gameObject.name} animation {parameter}");
         }
 
         private void ResetView()

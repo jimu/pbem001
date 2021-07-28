@@ -48,9 +48,12 @@ public class Matchstate
     [System.Obsolete]
     public Bopper.Unit findUnit(int player_id, string name)     // todo use guid
     {
+        Debug.Log($"findUnit: I'm looking for unit {name} owned by {player_id}");
         foreach (var unit in units)
             if (unit.name == name && unit.player_id == player_id)
                 return unit;
+            else
+                Debug.Log($"No match (comparing {unit.name} P{player_id})");
         return null;
     }
 

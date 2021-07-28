@@ -85,14 +85,14 @@ public class HexGrid : MonoBehaviour
     /// <param name="i">index into cells[]</param>
     void CreateCell (int x, int z, int i)
     {
-        Vector3 position;
+        Vector3 position = GridToPosition(x, z);
         //position.x = x * 10f;     // grid positioning
         //position.z = z * 10f;
-        
+        /*
         position.x = (x + z / 2f - z / 2 ) * (HexMetrics.innerRadius * 2f);
         position.y = 0f;
         position.z = z * (HexMetrics.outerRadius * 1.5f);
-
+        */
         HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
@@ -113,6 +113,14 @@ public class HexGrid : MonoBehaviour
         label.text = cell.coordinates.ToRivetsString(); // + "\n" + cell.coordinates.ToString();
     }
 
+    static public Vector3 GridToPosition(int x, int z)
+    {
+        Vector3 position;
+        position.x = (x + z / 2f - z / 2) * (HexMetrics.innerRadius * 2f);
+        position.y = 0f;
+        position.z = z * (HexMetrics.outerRadius * 1.5f);
+        return position;
+    }
 
     public void ColorCell(Vector3 position, Color color, UnitData data)
     {
@@ -148,15 +156,36 @@ public class HexGrid : MonoBehaviour
         int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
         Debug.Log($"I want to create a {data.unitType} at {hcoords} which is cells[{index}/{cells.Length}]");
         HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
-        return cell.AddStackableUnit(id, data, altColor, layer);
+        return cell.CreateStackableUnit(id, data, altColor, layer);
     }
 
-    public void RemoveUnitFromCell(HexCoordinates hcoords, int id)
+    public Unit AddUnitToCell(HexCoordinates hcoords, Unit unit, int layer)
+    {
+        int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
+        HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
+        return cell.AddStackableUnit(unit, layer);
+    }
+
+    public void DestroyUnitInCell(HexCoordinates hcoords, int id)
     {
         int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
         Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
         HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
-        cell.RemoveStackableUnit(id);
+        cell.DestroyStackableUnit(id);
     }
 
+    public Unit RemoveUnitInCell(HexCoordinates hcoords, int id)
+    {
+        int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
+        Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
+        HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
+        return cell.RemoveStackableUnit(id);
+    }
+
+    public Vector3 HexCoordinatesToPosition(HexCoordinates hcoords)
+    {
+        int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;
+        HexCell cell = cells[index];
+        return cell.transform.position;
+    }
 }

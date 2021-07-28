@@ -28,4 +28,20 @@ MonoBehaviour:
     1 DEPLOY  LB
     1005
 
-    0 PHASE End of setup'
+    2 DEPLOY BCPC 0208
+
+    2 DEPLOY BB 0209
+
+    2 DEPLOY BB 0209
+
+    2
+    DEPLOY RB 0110
+
+    2 DEPLOY RB 0308
+
+    2 DEPLOY RB 0407
+
+    2 DEPLOY RB 0506
+
+    0
+    PHASE End of setup'

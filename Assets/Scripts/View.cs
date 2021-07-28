@@ -32,7 +32,7 @@ public class ViewX : MonoBehaviour
     {
         Debug.Log($"View.UndeployUnit({unit.id})"); //todo
         HexCoordinates hcoord = HexCoordinates.FromRivets(unit.coord);
-        hexGrid.RemoveUnitFromCell(hcoord, unit.id);
+        hexGrid.DestroyUnitInCell(hcoord, unit.id);
     }
 
 }
