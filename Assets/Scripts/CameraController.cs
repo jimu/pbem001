@@ -37,6 +37,7 @@ public class CameraController : MonoBehaviour
     {
         //HandleMovementInput();
         HandleMouseInput();
+        HandleZoom();
     }
 
     void HandleMovementInput()
@@ -62,7 +63,6 @@ public class CameraController : MonoBehaviour
         transform.position = newPosition;
         transform.rotation = newRotation;
 
-        HandleZoom();
     }
 
     void HandleZoomOld()
