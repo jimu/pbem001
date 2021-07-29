@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// MoveCommandAnimation implements the animation for a MoveCommand in Unity
+/// </summary>
 public class MoveCommandAnimation : MonoBehaviour
 {
     [SerializeField] Vector3 startPos;
