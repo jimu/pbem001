@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Bopper.Commands;
 
 namespace Bopper {
     public class DebugMenu : MonoBehaviour
@@ -31,7 +32,7 @@ namespace Bopper {
         {
             //adapter.SetCurrentTop();      // TODO (is this important???)
             //adapter.data.Clear();
-            commandController.commands.AddRange(BopperData.commands);
+            //commandController.commands.AddRange(BopperData.commands);
             //adapter.UpdateSelection();
         }
         public void OnAddCommand() { commandController.commands.Add(new CommandDeploy(1, UnitType.JB, Random.Range(1000, 10000))); }

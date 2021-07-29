@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Bopper;
+using Bopper.Commands;
 
 /// <summary>
+/// The CommandController is responsible for maintaining the Command list, controlling the current command index, and excuting commands
+/// </summary>
+/// <remarks>
 /// Responsibilities:
 /// * Maintains pointer into CommandList
 /// * next, prev, top, bottom, goto
 /// * play?
 /// * SetPlaybackRate?
-/// </summary>
+/// </ remarks>
 public class CommandController : MonoBehaviour
 {
     public NotificationList<Command> commands = new NotificationList<Command>();
@@ -96,7 +101,7 @@ public class CommandController : MonoBehaviour
         while (currentIndex < index)
         {
             currentIndex++;
-            Debug.Log($"PlayForwardTo({commands[currentIndex]})");
+            //Debug.Log($"PlayForwardTo({commands[currentIndex]})");
             GameManager.instance.matchstate = commands[currentIndex].Execute(GameManager.instance.matchstate);
             logListeners?.Invoke();
         }

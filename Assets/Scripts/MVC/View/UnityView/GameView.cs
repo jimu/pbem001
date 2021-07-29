@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Abstracted UI.  Directs UI functions to concrete UI implementations like <see cref="Bopper.View.Unity"/> and <see cref="Bopper.View.Text"/>
+/// </summary>
 namespace Bopper.View
 {
     static public class ViewMaster
@@ -17,9 +20,14 @@ namespace Bopper.View
     }
 }
 
-
+/// <summary>
+/// Concrete GUI view for Unity implementation of the PBEM system
+/// </summary>
 namespace Bopper.View.Unity
 {
+    /// <summary>
+    /// The unity UI implementation of PBEM events like Command Execute/Undo
+    /// </summary>
     public class GameView : MonoBehaviour
     {
         [SerializeField] HexGrid hexGrid;
@@ -30,7 +38,9 @@ namespace Bopper.View.Unity
         Animator currentAnimator;
         string currentParameter;
 
-        // Start is called before the first frame update
+        /// <summary>
+        /// Register to listen to UI related events like command execution and undo
+        /// </summary>
         void Start()
         {
             // Listen for deployment commands
@@ -44,31 +54,6 @@ namespace Bopper.View.Unity
 
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        /*
-        /// <summary>
-        /// Add all Commands handled by this view
-        /// </summary>
-        /// <param name="command"></param>
-        public void Display(Command command)
-        {
-            System.Type type = command.GetType();
-
-            if (type == typeof(CommandDeploy)) Display((CommandDeploy)command);
-            else
-                DisplayNone();
-        }
-
-        void Display(CommandDeploy command)
-        {
-            DisplayDeploy(command.unit, command.coord);
-        }
-        */
 
         void DisplayDeploy(Bopper.Unit unit, string message)
         {
@@ -98,9 +83,11 @@ namespace Bopper.View.Unity
         }
 
 
-        void DisplayMove(Bopper.Unit unit, int coord, int layer, string message)
+        void DisplayMove(Bopper.Unit unit, int prevCoord, int prevLayer, string message)
         {
-            HexCoordinates startHcoord = HexCoordinates.FromRivets(coord);
+            StopAnimator(); // this was supposed to fix stacking problem but it didn't
+
+            HexCoordinates startHcoord = HexCoordinates.FromRivets(prevCoord);
             HexCoordinates destHcoord = HexCoordinates.FromRivets(unit.coord);
 
             Unit counter = idToUnit[unit.id];
@@ -108,8 +95,10 @@ namespace Bopper.View.Unity
             Vector3 startPos = hexGrid.HexCoordinatesToPosition(startHcoord);
             Vector3 endPos = hexGrid.HexCoordinatesToPosition(destHcoord);
             hexGrid.RemoveUnitInCell(startHcoord, unit.id);
-            hexGrid.AddUnitToCell(destHcoord, counter, layer);
-            counter.transform.position = startPos; // try to prevent flash
+            hexGrid.AddUnitToCell(destHcoord, counter, unit.layer);
+            endPos = counter.transform.position;
+            Debug.Log($"DisplayMove: endPos is {endPos}");
+            //counter.transform.position = startPos; // try to prevent flash
 
             counter.GetComponent<MoveCommandAnimation>().Init(startPos, endPos);
             StartAnimator(counter.GetComponent<Animator>(), "Moving");
@@ -153,7 +142,7 @@ namespace Bopper.View.Unity
             currentAnimator = animator;
             currentParameter = parameter;
             animator.SetBool(parameter, true);
-            Debug.Log($"I just set animation for {animator.gameObject.name} animation {parameter}");
+            //Debug.Log($"I just set animation for {animator.gameObject.name} animation {parameter}");
         }
 
         private void ResetView()

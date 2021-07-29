@@ -28,18 +28,34 @@ MonoBehaviour:
 
     1 DEPLOY RB 0108.1
 
-    1 MOVE JB1 0208
+    2 DEPLOY BCPC 1103
+
+    2 DEPLOY
+    TB 1004 TB1
+
+    2 DEPLOY TB 1004 TB2
+
+    2 DEPLOY TB 1005 TB3
+
+    1 MOVE JB1
+    0208
 
     1 MOVE JB1 0308
 
-    1
-    MOVE JB1 0408
+    1 MOVE JB1 0408
 
     1 MOVE RB1 0208
 
-    1 MOVE RB1 0308
+    1 MOVE
+    RB1 0308
 
     1 MOVE RB1 0408
 
-    0
-    PHASE End'
+    2 MOVE TB1 1103
+
+    2 MOVE TB2 1103.1
+
+    2
+    MOVE TB3 1103.1
+
+    0 PHASE End'

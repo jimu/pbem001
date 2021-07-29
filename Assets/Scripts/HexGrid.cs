@@ -154,7 +154,7 @@ public class HexGrid : MonoBehaviour
     public Unit CreateUnitInCell(HexCoordinates hcoords, int id, UnitData data, bool altColor, int layer)
     {
         int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
-        Debug.Log($"I want to create a {data.unitType} at {hcoords} which is cells[{index}/{cells.Length}]");
+        //Debug.Log($"I want to create a {data.unitType} at {hcoords} which is cells[{index}/{cells.Length}]");
         HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
         return cell.CreateStackableUnit(id, data, altColor, layer);
     }
@@ -169,7 +169,7 @@ public class HexGrid : MonoBehaviour
     public void DestroyUnitInCell(HexCoordinates hcoords, int id)
     {
         int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
-        Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
+        //Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
         HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
         cell.DestroyStackableUnit(id);
     }
@@ -177,7 +177,7 @@ public class HexGrid : MonoBehaviour
     public Unit RemoveUnitInCell(HexCoordinates hcoords, int id)
     {
         int index = hcoords.X + hcoords.Z * width + hcoords.Z / 2;  // translate the X,Y,Z coordinates into the cells[] single-dimention array
-        Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
+        //Debug.Log($"I want to remove unit id {id} at {hcoords} which is cells[{index}/{cells.Length}]");
         HexCell cell = cells[index];                                            // lookup HexCell object from it's cells[] index
         return cell.RemoveStackableUnit(id);
     }

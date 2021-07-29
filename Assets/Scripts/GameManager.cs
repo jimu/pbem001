@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
 using WebApi;
+using Bopper.Commands;
 using Bopper.View.Unity;
 
 
@@ -27,16 +28,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [HideInInspector]
     public GameData gameData;
-    public NotificationList<Command> commands;
     public CommandController commandController;
 
     public GameState state;
     public bool draggingGizmo = false;
-
-    private void Awake()
-    {
-        commands = commandController.commands;
-    }
 
 
     // Start is called before the first frame update

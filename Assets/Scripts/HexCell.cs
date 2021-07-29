@@ -3,11 +3,15 @@ using System.Collections.Generic;
 
 
 /// <summary>
-/// A single hex
+/// Bopper's Unity UI
 /// </summary>
 /// 
 namespace Bopper.View.Unity
 {
+    /// <summary>
+    /// A HexCell is a single graphical hex on the map responsible for it's HexCoordinates and a list of <see cref="Unit"/>s in the hex.
+    /// </summary>
+    /// <remarks>Responsible for knowing it's HexCoordinates and list of <c>Units</c> in the hex</remarks>
     public class HexCell : MonoBehaviour
     {
         public HexCoordinates coordinates;
@@ -81,9 +85,18 @@ namespace Bopper.View.Unity
             else
                 units.Add(counter);
 
+            DumpUnits(units, $"AddStackableUnit({counter.name}, L{layer}): ");
+
             RepositionStack();
 
             return counter;
+        }
+
+        void DumpUnits(List<Unit> units, string message)
+        {
+            foreach (var unit in units)
+                message += $" {unit.name}";
+            Debug.Log(message);
         }
 
         public void DestroyStackableUnit(int id)
@@ -102,7 +115,7 @@ namespace Bopper.View.Unity
         {
             foreach (Unit unit in units)
             {
-                Debug.Log($"RemoveStackableUnit({id}) checking against {unit.id}");
+                //Debug.Log($"RemoveStackableUnit({id}) checking against {unit.id}");
                 if (unit.id == id)
                 {
                     units.Remove(unit);
@@ -124,6 +137,7 @@ namespace Bopper.View.Unity
         {
             // if there are more than 2 units, we are in a BCPC and we want to show unit names to right
             float dz = IsFactoryStack() ? -3f : 2f;
+            Debug.Log($"RepositionStack: {IsFactoryStack()}");
 
             Vector3 pos = transform.position;
             pos.y += 0.5f;
@@ -132,6 +146,7 @@ namespace Bopper.View.Unity
 
             foreach (Unit unit in units)
             {
+                Debug.Log($"Repositioning unit {unit}: ({pos})");
                 unit.transform.position = pos;
                 pos.y += 2f;
                 pos.x -= 2f;

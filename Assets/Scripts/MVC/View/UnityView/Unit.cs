@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Bopper.View.Unity
 {
+    /// <summary>
+    /// A Unity MonoBehavior for a Unit (aka Counter)
+    /// </summary>
     public class Unit : MonoBehaviour
     {
         public UnitData data;

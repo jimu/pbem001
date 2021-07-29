@@ -8,6 +8,9 @@ using RMatch = System.Text.RegularExpressions.Match;
 
 namespace Bopper
 {
+    /// <summary>
+    /// PBEM related information related to an instantiated Unit; id, coord, player_id, ...
+    /// </summary>
     [Serializable]
     public class Unit
     {
@@ -20,8 +23,16 @@ namespace Bopper
         public long guid;
 
         static List<Unit> units = new List<Unit>();
-        static Dictionary<long, Unit> guidToUnit = new Dictionary<long, Unit>();
+        //static Dictionary<long, Unit> guidToUnit = new Dictionary<long, Unit>();
 
+        /// <summary>
+        /// Unit constructor
+        /// </summary>
+        /// <param name="utype">Unit Type</param>
+        /// <param name="player_id">Owner</param>
+        /// <param name="coord">Location (e.g., 0801)</param>
+        /// <param name="layer">Layer 1 means in factory</param>
+        /// <param name="name">Unique name for unit (e.g., "BB1")</param>
         public Unit(UnitType utype, int player_id, int coord, int layer = 0, string name = "")
         {
             Debug.Log($"Unit({utype}, {name}) CTOR");
@@ -37,9 +48,10 @@ namespace Bopper
             this.name = name.Length > 0 ? name : $"{utype}-{num}";
 
             units.Add(this);
-            guidToUnit[Guid(player_id, utype, num)] = this;
+            //guidToUnit[Guid(player_id, utype, num)] = this;
         }
 
+        /*
         static public long Guid(int player_id, string unit_id)
         {
             RMatch match = Regex.Match(unit_id, @"(LB|RB|JB|BB|TB|BCPC)-?(\d+)");
@@ -56,6 +68,7 @@ namespace Bopper
         {
             return player_id * 100000 + (int)utype * 10000 + num;
         }
+        */
 
         private void SetData(UnitType utype)
         {

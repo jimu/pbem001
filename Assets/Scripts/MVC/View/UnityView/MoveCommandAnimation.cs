@@ -26,14 +26,14 @@ public class MoveCommandAnimation : MonoBehaviour
 
     private void Disable()
     {
-        Debug.Log($"Moving Animation Disabled");
+        //Debug.Log($"Moving Animation Disabled");
         transform.position = endPos;
         enabled = false;
     }
 
     public void Init(Vector3 start, Vector3 end)
     {
-        Debug.Log($"Starting Moving Animation");
+        //Debug.Log($"Starting Moving Animation");
         animator = GetComponent<Animator>();
         dist = 0f;
         startPos = start;

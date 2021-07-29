@@ -3,6 +3,7 @@ namespace Bopper
 {
 	static public class BopperData
 	{
+		/*
 		static public Command[] commands = new Command[] {
 
 			new CommandPhase(0, "Setup - Introductions"),
@@ -46,6 +47,7 @@ namespace Bopper
 			new CommandMove(2, "BB-2", 1213),
 			new CommandSay(2, "This is a really long message that takes more than two lines and needs to expand to accomodate all content"),
 			};
+		*/
 
 		static public string commandset =
 @"0 PHASE Notice: commandset 1

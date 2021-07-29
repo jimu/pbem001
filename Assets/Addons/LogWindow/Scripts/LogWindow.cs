@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
 using RegexMatch = System.Text.RegularExpressions.Match;
+using Bopper.Commands;
 
 namespace Bopper
 {

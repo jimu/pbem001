@@ -80,7 +80,7 @@ public class NotificationList<T> : List<T>
 
 	private void NotifyListenersOfVisibleChanges(int start, int count, bool isDelete = false)
 	{
-		Debug.Log($"NotifyListenersOfVisibleChanges({start},{count},{isDelete})");
+		//Debug.Log($"NotifyListenersOfVisibleChanges({start},{count},{isDelete})");
 		if (start < visibleStart)
 		{
 			count -= visibleStart - start;
@@ -107,7 +107,7 @@ public class NotificationList<T> : List<T>
 
 	public int RevealAtEnd(int revealCount)
 	{
-        Debug.Log($"RevealAtEnd");
+        //Debug.Log($"RevealAtEnd");
 		revealCount = Math.Min(revealCount, base.Count - visibleEnd);
 		if (revealCount > 0)
 		{

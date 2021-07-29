@@ -10,6 +10,8 @@ using Com.TheFallenGames.OSA.DataHelpers;
 using TMPro;
 using UnityEngine.UI.ProceduralImage;
 using UnityEngine.Events;
+using Bopper.Commands;
+
 
 namespace Bopper
 {
